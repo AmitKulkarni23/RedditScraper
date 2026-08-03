@@ -8,3 +8,12 @@ dist/
 *.tsbuildinfo
 .turbo/
 .supabase/
+
+# Claude Code
+.claude/settings.local.json
+.mcp.json
+
+# Impeccable (installed locally via skill)
+.claude/skills/
+.github/hooks/
+.github/skills/
