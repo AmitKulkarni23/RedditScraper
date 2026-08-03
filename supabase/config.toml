@@ -1,0 +1,6 @@
+[project]
+id = ""  # Set after creating Supabase project
+
+[db]
+port = 54322
+major_version = 15
