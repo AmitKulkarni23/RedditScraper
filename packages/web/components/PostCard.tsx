@@ -19,24 +19,36 @@ function timeAgo(dateStr: string): string {
   return `${months}mo ago`;
 }
 
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <div className="post-card">
+    <article className="post-card">
       <div className="post-meta">
         <span className="subreddit-tag">r/{post.subreddit}</span>
         <span>u/{post.author}</span>
-        <span>{timeAgo(post.created_utc)}</span>
+        <span title={formatDate(post.created_utc)}>
+          {timeAgo(post.created_utc)}
+        </span>
       </div>
-      <div className="post-title">
+      <h2 className="post-title">
         <a href={post.permalink} target="_blank" rel="noopener noreferrer">
           {post.title}
         </a>
-      </div>
-      {post.body && <div className="post-body">{post.body}</div>}
-      <div className="post-meta" style={{ marginTop: "0.5rem" }}>
+      </h2>
+      {post.body && <p className="post-body">{post.body}</p>}
+      <div className="post-stats">
         <span>{post.score} points</span>
         <span>{post.num_comments} comments</span>
       </div>
-    </div>
+    </article>
   );
 }

@@ -5,6 +5,7 @@ interface SearchBarProps {
   onQueryChange: (query: string) => void;
   onSearch: () => void;
   loading: boolean;
+  filtersDirty: boolean;
 }
 
 export default function SearchBar({
@@ -12,6 +13,7 @@ export default function SearchBar({
   onQueryChange,
   onSearch,
   loading,
+  filtersDirty,
 }: SearchBarProps) {
   return (
     <form
@@ -24,12 +26,17 @@ export default function SearchBar({
       <input
         type="text"
         className="search-input"
-        placeholder="Search posts... (e.g. deals, organic, employees)"
+        placeholder="Search archived posts..."
         value={query}
         onChange={(e) => onQueryChange(e.target.value)}
+        aria-label="Search posts"
       />
-      <button type="submit" className="search-btn" disabled={loading}>
-        {loading ? "Searching..." : "Search"}
+      <button
+        type="submit"
+        className={`search-btn${filtersDirty ? " search-btn-dirty" : ""}`}
+        disabled={loading}
+      >
+        {loading ? "Searching…" : filtersDirty ? "Update results" : "Search"}
       </button>
     </form>
   );

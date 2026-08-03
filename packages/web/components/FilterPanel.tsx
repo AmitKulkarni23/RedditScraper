@@ -20,8 +20,11 @@ export default function FilterPanel({
   return (
     <div className="filters">
       <div className="filters-row">
-        <span className="filter-label">Subreddit</span>
+        <label className="filter-label" htmlFor="filter-subreddit">
+          Subreddit
+        </label>
         <select
+          id="filter-subreddit"
           className="filter-select"
           value={filters.subreddit ?? ""}
           onChange={(e) =>
@@ -38,23 +41,11 @@ export default function FilterPanel({
       </div>
 
       <div className="filters-row">
-        <span className="filter-label">Min score</span>
-        <input
-          type="number"
-          className="filter-input"
-          placeholder="0"
-          value={filters.minScore ?? ""}
-          onChange={(e) =>
-            update({
-              minScore: e.target.value ? Number(e.target.value) : undefined,
-            })
-          }
-        />
-      </div>
-
-      <div className="filters-row">
-        <span className="filter-label">Sort by</span>
+        <label className="filter-label" htmlFor="filter-sortby">
+          Sort by
+        </label>
         <select
+          id="filter-sortby"
           className="filter-select"
           value={filters.sortBy ?? "created_utc"}
           onChange={(e) =>
@@ -68,8 +59,11 @@ export default function FilterPanel({
       </div>
 
       <div className="filters-row">
-        <span className="filter-label">Order</span>
+        <label className="filter-label" htmlFor="filter-order">
+          Order
+        </label>
         <select
+          id="filter-order"
           className="filter-select"
           value={filters.sortOrder ?? "desc"}
           onChange={(e) =>

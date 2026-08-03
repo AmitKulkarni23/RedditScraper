@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Reddit Scraper",
-  description: "Search and explore scraped Reddit posts",
+  title: "Reddit Archive",
+  description: "Search your saved posts across Reddit communities",
 };
 
 export default function RootLayout({
