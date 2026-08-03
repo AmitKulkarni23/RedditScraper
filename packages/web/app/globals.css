@@ -74,6 +74,29 @@ body {
   color: var(--text-muted);
   margin-top: 0.5rem;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.freshness-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .freshness-dot {
+    animation: none;
+    opacity: 0.7;
+  }
 }
 
 /* Search bar */
@@ -194,6 +217,24 @@ body {
   padding: 1rem 1.25rem;
   box-shadow: var(--shadow);
   transition: border-color 0.15s;
+  animation: card-in 0.3s ease-out both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card {
+    animation: none;
+  }
 }
 
 .post-card:hover {
@@ -341,6 +382,36 @@ body {
   text-align: center;
   padding: 3rem;
   color: var(--text-muted);
+}
+
+.empty-shelf {
+  width: 48px;
+  height: 32px;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.empty-shelf::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border);
+}
+
+.empty-shelf::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .empty-title {

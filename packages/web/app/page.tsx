@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
@@ -63,6 +63,19 @@ export default function Home() {
 
   const [filtersDirty, setFiltersDirty] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    function handleSlash(e: KeyboardEvent) {
+      if (e.key !== "/") return;
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      e.preventDefault();
+      searchInputRef.current?.focus();
+    }
+    document.addEventListener("keydown", handleSlash);
+    return () => document.removeEventListener("keydown", handleSlash);
+  }, []);
 
   useEffect(() => {
     fetch("/api/subreddits")
@@ -171,6 +184,7 @@ export default function Home() {
       </header>
 
       <SearchBar
+        ref={searchInputRef}
         query={query}
         onQueryChange={setQuery}
         onSearch={handleSearch}
@@ -209,6 +223,7 @@ export default function Home() {
 
       {!loading && hasSearched && posts.length === 0 && (
         <div className="empty-state" role="status">
+          <div className="empty-shelf" aria-hidden="true" />
           <p className="empty-title">No posts found</p>
           <EmptyStateHint filters={filters} query={query} />
         </div>
@@ -226,8 +241,8 @@ export default function Home() {
           </div>
 
           <div className="posts-list">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+            {posts.map((post, i) => (
+              <PostCard key={post.id} post={post} index={i} />
             ))}
           </div>
 

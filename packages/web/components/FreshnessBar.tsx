@@ -20,6 +20,7 @@ export default function FreshnessBar({ lastScrapedAt }: FreshnessBarProps) {
 
   return (
     <p className="freshness">
+      <span className="freshness-dot" aria-hidden="true" />
       Last scraped {formatFreshness(lastScrapedAt)}
     </p>
   );

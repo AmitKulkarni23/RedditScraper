@@ -2,6 +2,7 @@ import type { PostRow } from "@reddit-scraper/shared";
 
 interface PostCardProps {
   post: PostRow;
+  index?: number;
 }
 
 function timeAgo(dateStr: string): string {
@@ -29,9 +30,14 @@ function formatDate(dateStr: string): string {
   });
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, index = 0 }: PostCardProps) {
+  const delay = Math.min(index * 0.04, 0.4);
+
   return (
-    <article className="post-card">
+    <article
+      className="post-card"
+      style={{ animationDelay: `${delay}s` }}
+    >
       <div className="post-meta">
         <span className="subreddit-tag">r/{post.subreddit}</span>
         <span>u/{post.author}</span>
