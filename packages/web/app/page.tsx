@@ -45,6 +45,14 @@ function buildParams(
 }
 
 export default function Home() {
+  return (
+    <Suspense>
+      <HomeInner />
+    </Suspense>
+  );
+}
+
+function HomeInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
