@@ -7,7 +7,7 @@ Scrapes Reddit posts on a schedule, stores them in Supabase, and serves a search
 - **TypeScript** monorepo (pnpm workspaces)
 - **Supabase** — Postgres database with full-text search, Row Level Security
 - **Next.js 15** (App Router) — search UI deployed on Vercel
-- **GitHub Actions** — cron-based scraper, runs every 6 hours
+- **GitHub Actions** — cron-based scraper, runs daily
 - **OpenRouter** — AI chat against stored data (Phase 3)
 
 ## Project Structure
@@ -25,10 +25,10 @@ Scrapes Reddit posts on a schedule, stores them in Supabase, and serves a search
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - [pnpm](https://pnpm.io/installation)
 - A [Supabase](https://supabase.com) project (free tier)
-- A [Reddit API](https://www.reddit.com/prefs/apps) app (script type)
+- A Reddit API app (script type) — create or find yours at https://www.reddit.com/prefs/apps
 
 ### Install
 
@@ -53,8 +53,14 @@ pnpm --filter web dev
 # Run the scraper locally
 pnpm --filter scraper start
 
-# Apply Supabase migrations
-supabase db push
+# Apply pending migrations to remote DB
+supabase db push --linked
+
+# Check local vs remote migration status
+supabase migration list --linked
+
+# Run arbitrary SQL against remote DB
+supabase db query "<SQL>" --linked
 
 # Build everything
 pnpm build
