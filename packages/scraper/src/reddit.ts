@@ -41,7 +41,7 @@ export async function fetchSubredditPosts(
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        "User-Agent": "RedditScraper/1.0",
+        "User-Agent": "web:reddit-scraper:1.0 (by /u/mvrick23)",
       },
     }
   );
