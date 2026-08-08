@@ -23,8 +23,17 @@ TypeScript monorepo: Reddit scraper (GitHub Actions cron) → Supabase Postgres 
 pnpm install              # Install all dependencies
 pnpm --filter web dev     # Run Next.js dev server
 pnpm --filter scraper start  # Run scraper locally
-supabase db push          # Apply migrations to Supabase
 ```
+
+## Supabase CLI (authenticated, linked to project xvqanpuklbzzuqusvwtb)
+```bash
+supabase migration list --linked          # Check local vs remote migration status
+supabase db push --linked                 # Apply pending local migrations to remote DB
+supabase db query "<SQL>" --linked        # Run arbitrary SQL against remote DB
+supabase db dump --linked                 # Dump remote schema
+```
+
+Prefer `supabase db query --linked` over the Supabase MCP for write operations — MCP is read-only.
 
 ## Environment Variables
 ### Scraper (GitHub Actions secrets)
