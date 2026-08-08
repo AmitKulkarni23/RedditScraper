@@ -24,7 +24,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
           ref={ref}
           type="text"
           className="search-input"
-          placeholder='Search archived posts… (press "/" to focus)'
+          placeholder="Search posts…"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           aria-label="Search posts"

@@ -25,7 +25,7 @@ export async function upsertPosts(
 
   const { data, error } = await client
     .from("posts")
-    .upsert(rows, { onConflict: "reddit_id" });
+    .upsert(rows, { onConflict: "reddit_id", ignoreDuplicates: true });
 
   if (error) {
     throw new Error(`Supabase upsert failed: ${error.message}`);

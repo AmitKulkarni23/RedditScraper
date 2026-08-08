@@ -1,7 +1,16 @@
 import { fetchSubredditPosts } from "./reddit.js";
 import { createSupabaseClient, upsertPosts } from "./db.js";
 
-const SUBREDDITS = ["smallbusiness", "startups"];
+const SUBREDDITS = [
+  "problems",
+  "buildinpublic",
+  "indiehackers",
+  "marketing",
+  "microsaas",
+  "startups",
+  "StartUpIndia",
+  "technology",
+];
 
 function requireEnv(name: string): string {
   const value = process.env[name];

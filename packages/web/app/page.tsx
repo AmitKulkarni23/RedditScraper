@@ -74,18 +74,6 @@ function HomeInner() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    function handleSlash(e: KeyboardEvent) {
-      if (e.key !== "/") return;
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-      e.preventDefault();
-      searchInputRef.current?.focus();
-    }
-    document.addEventListener("keydown", handleSlash);
-    return () => document.removeEventListener("keydown", handleSlash);
-  }, []);
-
-  useEffect(() => {
     fetch("/api/subreddits")
       .then((r) => r.json())
       .then((d) => setSubreddits(d.subreddits ?? []))
@@ -185,9 +173,6 @@ function HomeInner() {
     <main className="container">
       <header className="header">
         <h1>Reddit Archive</h1>
-        <p className="subtitle">
-          Search your saved posts across communities
-        </p>
         <FreshnessBar lastScrapedAt={lastScrapedAt} />
       </header>
 
@@ -297,7 +282,7 @@ function EmptyStateHint({
     hints.push("use fewer or broader search terms");
   }
   hints.push(
-    "posts are scraped periodically — recent content may not appear for up to 6 hours"
+    "posts are scraped daily — check back tomorrow for the latest content"
   );
 
   return (

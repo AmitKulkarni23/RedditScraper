@@ -40,7 +40,6 @@ export default function PostCard({ post, index = 0 }: PostCardProps) {
     >
       <div className="post-meta">
         <span className="subreddit-tag">r/{post.subreddit}</span>
-        <span>u/{post.author}</span>
         <span title={formatDate(post.created_utc)}>
           {timeAgo(post.created_utc)}
         </span>
@@ -52,7 +51,6 @@ export default function PostCard({ post, index = 0 }: PostCardProps) {
       </h2>
       {post.body && <p className="post-body">{post.body}</p>}
       <div className="post-stats">
-        <span>{post.score} points</span>
         <span>{post.num_comments} comments</span>
       </div>
     </article>
