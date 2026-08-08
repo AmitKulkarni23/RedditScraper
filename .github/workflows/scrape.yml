@@ -2,7 +2,7 @@ name: Reddit Scraper
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # Every 6 hours
+    - cron: "0 8 * * *"  # Every day at 8am UTC
   workflow_dispatch: {}     # Manual trigger
 
 jobs:
