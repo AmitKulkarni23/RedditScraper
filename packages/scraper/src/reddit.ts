@@ -3,7 +3,7 @@ import type { RedditPost } from "@reddit-scraper/shared";
 const REDDIT_BASE_URL = "https://oauth.reddit.com";
 const TOKEN_URL = "https://www.reddit.com/api/v1/access_token";
 
-async function getAccessToken(
+export async function getAccessToken(
   clientId: string,
   clientSecret: string
 ): Promise<string> {
@@ -30,12 +30,9 @@ async function getAccessToken(
 
 export async function fetchSubredditPosts(
   subreddit: string,
-  clientId: string,
-  clientSecret: string,
+  token: string,
   limit = 100
 ): Promise<RedditPost[]> {
-  const token = await getAccessToken(clientId, clientSecret);
-
   const response = await fetch(
     `${REDDIT_BASE_URL}/r/${subreddit}/hot?limit=${limit}`,
     {

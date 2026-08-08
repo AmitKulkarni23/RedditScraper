@@ -1,4 +1,4 @@
-import { fetchSubredditPosts } from "./reddit.js";
+import { getAccessToken, fetchSubredditPosts } from "./reddit.js";
 import { createSupabaseClient, upsertPosts } from "./db.js";
 
 const SUBREDDITS = [
@@ -27,18 +27,14 @@ async function main() {
   const redditClientSecret = requireEnv("REDDIT_CLIENT_SECRET");
 
   const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
+  const token = await getAccessToken(redditClientId, redditClientSecret);
 
   let totalPosts = 0;
 
   for (const subreddit of SUBREDDITS) {
     try {
       console.log(`Scraping r/${subreddit}...`);
-      const posts = await fetchSubredditPosts(
-        subreddit,
-        redditClientId,
-        redditClientSecret,
-        10
-      );
+      const posts = await fetchSubredditPosts(subreddit, token, 10);
       await upsertPosts(supabase, posts);
       totalPosts += posts.length;
       console.log(`  Stored ${posts.length} posts from r/${subreddit}`);
