@@ -1,7 +1,7 @@
 import { fetchSubredditPosts } from "./reddit.js";
 import { createSupabaseClient, upsertPosts } from "./db.js";
 
-const SUBREDDITS = ["wholefoods", "grocery", "Frugal"];
+const SUBREDDITS = ["smallbusiness", "startups"];
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -27,7 +27,8 @@ async function main() {
       const posts = await fetchSubredditPosts(
         subreddit,
         redditClientId,
-        redditClientSecret
+        redditClientSecret,
+        10
       );
       await upsertPosts(supabase, posts);
       totalPosts += posts.length;
