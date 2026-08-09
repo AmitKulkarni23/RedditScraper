@@ -2,7 +2,6 @@ import { getAccessToken, fetchSubredditPosts } from "./reddit.js";
 import { createSupabaseClient, upsertPosts } from "./db.js";
 
 const SUBREDDITS = [
-  "problems",
   "buildinpublic",
   "indiehackers",
   "marketing",
