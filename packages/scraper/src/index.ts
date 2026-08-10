@@ -2,13 +2,15 @@ import { getAccessToken, fetchSubredditPosts } from "./reddit.js";
 import { createSupabaseClient, upsertPosts } from "./db.js";
 
 const SUBREDDITS = [
-  "buildinpublic",
-  "indiehackers",
-  "marketing",
-  "microsaas",
-  "startups",
-  "StartUpIndia",
-  "technology",
+  "wholefoodscustomers",
+  "wholefoods",
+  // "buildinpublic",
+  // "indiehackers",
+  // "marketing",
+  // "microsaas",
+  // "startups",
+  // "StartUpIndia",
+  // "technology",
 ];
 
 function requireEnv(name: string): string {
