@@ -44,14 +44,20 @@ export default function PostCard({ post, index = 0 }: PostCardProps) {
           {timeAgo(post.created_utc)}
         </span>
       </div>
-      <h2 className="post-title">
-        <a href={post.permalink} target="_blank" rel="noopener noreferrer">
-          {post.title}
-        </a>
-      </h2>
+      <h2 className="post-title">{post.title}</h2>
       {post.body && <p className="post-body">{post.body}</p>}
-      <div className="post-stats">
-        <span>{post.num_comments} comments</span>
+      <div className="post-footer">
+        <div className="post-stats">
+          <span>{post.num_comments} comments</span>
+        </div>
+        <a
+          href={`https://reddit.com${post.permalink}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="post-link"
+        >
+          View on Reddit &rarr;
+        </a>
       </div>
     </article>
   );

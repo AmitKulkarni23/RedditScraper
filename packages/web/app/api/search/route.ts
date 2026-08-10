@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
+import { MOCK_POSTS } from "@/lib/mock-data";
 import type { SearchFilters } from "@reddit-scraper/shared";
 
 export async function GET(request: NextRequest) {
@@ -20,6 +21,42 @@ export async function GET(request: NextRequest) {
   };
 
   const supabase = getSupabaseClient();
+
+  if (!supabase) {
+    let posts = [...MOCK_POSTS];
+
+    if (filters.query) {
+      const q = filters.query.toLowerCase();
+      posts = posts.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.body.toLowerCase().includes(q)
+      );
+    }
+    if (filters.subreddit) {
+      posts = posts.filter((p) => p.subreddit === filters.subreddit);
+    }
+    if (filters.minScore !== undefined) {
+      posts = posts.filter((p) => p.score >= filters.minScore!);
+    }
+
+    const sortKey = filters.sortBy ?? "created_utc";
+    const asc = filters.sortOrder === "asc";
+    posts.sort((a, b) => {
+      const av = a[sortKey as keyof typeof a];
+      const bv = b[sortKey as keyof typeof b];
+      if (av < bv) return asc ? -1 : 1;
+      if (av > bv) return asc ? 1 : -1;
+      return 0;
+    });
+
+    const total = posts.length;
+    const offset = filters.offset ?? 0;
+    const limit = filters.limit ?? 25;
+    posts = posts.slice(offset, offset + limit);
+
+    return NextResponse.json({ posts, total });
+  }
 
   let query = supabase.from("posts").select("*", { count: "exact" });
 

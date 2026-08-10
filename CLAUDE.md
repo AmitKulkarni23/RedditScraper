@@ -21,9 +21,13 @@ TypeScript monorepo: Reddit scraper (GitHub Actions cron) → Supabase Postgres 
 ## Commands
 ```bash
 pnpm install              # Install all dependencies
-pnpm --filter web dev     # Run Next.js dev server
+pnpm --filter web dev     # Run Next.js dev server (http://localhost:3000)
 pnpm --filter scraper start  # Run scraper locally
 ```
+
+### Local Development (no Supabase needed)
+API routes fall back to mock data when `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are not set.
+To use real data, copy `.env.example` to `packages/web/.env.local` and fill in values.
 
 ## Supabase CLI (authenticated, linked to project xvqanpuklbzzuqusvwtb)
 ```bash

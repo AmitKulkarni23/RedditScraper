@@ -248,13 +248,27 @@ body {
   margin-bottom: 0.375rem;
 }
 
-.post-title a {
-  color: var(--text);
-  text-decoration: none;
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
 }
 
-.post-title a:hover {
+.post-link {
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--accent);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  transition: background 0.15s, color 0.15s;
+}
+
+.post-link:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 .post-meta {
@@ -298,7 +312,6 @@ body {
   gap: 0.75rem;
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-top: 0.5rem;
 }
 
 /* Pagination */
