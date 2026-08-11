@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import PostCard from "@/components/PostCard";
 import FreshnessBar from "@/components/FreshnessBar";
+import ChatThread from "@/components/ChatThread";
 import type { PostRow, SearchFilters } from "@reddit-scraper/shared";
 
 const PAGE_SIZE = 25;
@@ -52,6 +53,8 @@ export default function Home() {
   );
 }
 
+type Tab = "search" | "chat";
+
 function HomeInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -72,6 +75,8 @@ function HomeInner() {
   const [filtersDirty, setFiltersDirty] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [activeTab, setActiveTab] = useState<Tab>("search");
 
   useEffect(() => {
     fetch("/api/subreddits")
@@ -176,92 +181,117 @@ function HomeInner() {
         <FreshnessBar lastScrapedAt={lastScrapedAt} />
       </header>
 
-      <SearchBar
-        ref={searchInputRef}
-        query={query}
-        onQueryChange={setQuery}
-        onSearch={handleSearch}
-        loading={loading}
-        filtersDirty={filtersDirty}
-      />
+      <div className="tabs" role="tablist">
+        <button
+          role="tab"
+          aria-selected={activeTab === "search"}
+          className={`tab ${activeTab === "search" ? "tab-active" : ""}`}
+          onClick={() => setActiveTab("search")}
+        >
+          Search
+        </button>
+        <button
+          role="tab"
+          aria-selected={activeTab === "chat"}
+          className={`tab ${activeTab === "chat" ? "tab-active" : ""}`}
+          onClick={() => setActiveTab("chat")}
+        >
+          Ask AI
+        </button>
+      </div>
 
-      <FilterPanel
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
-        subreddits={subreddits}
-      />
-
-      {error && (
-        <div className="error" role="alert">
-          <p>{error}</p>
-          <button className="retry-btn" onClick={handleRetry}>
-            Try again
-          </button>
-        </div>
-      )}
-
-      {loading && (
-        <div className="loading" aria-live="polite">
-          <div className="skeleton-list">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="skeleton-card">
-                <div className="skeleton-line skeleton-short" />
-                <div className="skeleton-line skeleton-long" />
-                <div className="skeleton-line skeleton-medium" />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {!loading && hasSearched && posts.length === 0 && (
-        <div className="empty-state" role="status">
-          <div className="empty-shelf" aria-hidden="true" />
-          <p className="empty-title">No posts found</p>
-          <EmptyStateHint filters={filters} query={query} />
-        </div>
-      )}
-
-      {!loading && posts.length > 0 && (
+      {activeTab === "search" && (
         <>
-          <div className="results-info">
-            <span>
-              {total} result{total !== 1 ? "s" : ""} found
-            </span>
-            <span>
-              Page {page + 1} of {totalPages}
-            </span>
-          </div>
+          <SearchBar
+            ref={searchInputRef}
+            query={query}
+            onQueryChange={setQuery}
+            onSearch={handleSearch}
+            loading={loading}
+            filtersDirty={filtersDirty}
+          />
 
-          <div className="posts-list">
-            {posts.map((post, i) => (
-              <PostCard key={post.id} post={post} index={i} />
-            ))}
-          </div>
+          <FilterPanel
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            subreddits={subreddits}
+          />
 
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button
-                className="page-btn"
-                disabled={page === 0}
-                onClick={() => handlePageChange(page - 1)}
-              >
-                Previous
-              </button>
-              <span className="page-indicator">
-                {page + 1} / {totalPages}
-              </span>
-              <button
-                className="page-btn"
-                disabled={page >= totalPages - 1}
-                onClick={() => handlePageChange(page + 1)}
-              >
-                Next
+          {error && (
+            <div className="error" role="alert">
+              <p>{error}</p>
+              <button className="retry-btn" onClick={handleRetry}>
+                Try again
               </button>
             </div>
           )}
+
+          {loading && (
+            <div className="loading" aria-live="polite">
+              <div className="skeleton-list">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="skeleton-card">
+                    <div className="skeleton-line skeleton-short" />
+                    <div className="skeleton-line skeleton-long" />
+                    <div className="skeleton-line skeleton-medium" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!loading && hasSearched && posts.length === 0 && (
+            <div className="empty-state" role="status">
+              <div className="empty-shelf" aria-hidden="true" />
+              <p className="empty-title">No posts found</p>
+              <EmptyStateHint filters={filters} query={query} />
+            </div>
+          )}
+
+          {!loading && posts.length > 0 && (
+            <>
+              <div className="results-info">
+                <span>
+                  {total} result{total !== 1 ? "s" : ""} found
+                </span>
+                <span>
+                  Page {page + 1} of {totalPages}
+                </span>
+              </div>
+
+              <div className="posts-list">
+                {posts.map((post, i) => (
+                  <PostCard key={post.id} post={post} index={i} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    className="page-btn"
+                    disabled={page === 0}
+                    onClick={() => handlePageChange(page - 1)}
+                  >
+                    Previous
+                  </button>
+                  <span className="page-indicator">
+                    {page + 1} / {totalPages}
+                  </span>
+                  <button
+                    className="page-btn"
+                    disabled={page >= totalPages - 1}
+                    onClick={() => handlePageChange(page + 1)}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
+
+      {activeTab === "chat" && <ChatThread />}
     </main>
   );
 }
